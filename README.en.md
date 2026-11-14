@@ -25,22 +25,6 @@ Once installed, it helps you do four things inside Claude:
 
 ---
 
-## Install in 30 seconds
-
-```bash
-git clone https://github.com/ainsteiner/master-in-claude.skill.git
-mkdir -p ~/.claude/skills
-cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
-```
-
-For WorkBuddy, use `~/.workbuddy/skills/` instead. Then just talk:
-
-> Turn my weekly competitor digest into a plan, save it, and let Sonnet execute it next week.
-
-You get a `SOLUTION.md`, not a one-off answer.
-
----
-
 ## The four capabilities
 
 ### 1 · Turn a requirement into a reusable plan, inside Claude
@@ -100,6 +84,24 @@ Payment, outbound messages, signing and deletion always require a human by defau
 
 ---
 
+## Install in 30 seconds
+
+```bash
+git clone https://github.com/ainsteiner/master-in-claude.skill.git
+mkdir -p ~/.claude/skills
+cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
+```
+
+Then just talk:
+
+> Turn my weekly competitor digest into a plan, save it, and let Sonnet execute it next week.
+
+You get a `SOLUTION.md`, not a one-off answer.
+
+Note: WorkBuddy users can use `~/.workbuddy/skills/` instead.
+
+---
+
 ## Where the rules come from
 
 None of this is improvised. **Every rule traces back to one of three sources.**
@@ -117,6 +119,8 @@ This is the fastest-moving part, and where the edge comes from. We read and dist
 ### Source 2 · Claude AI Bible
 
 **Stephen Clear ｜ Independent ｜ 2026-06-16**
+
+> Chinese edition updated to 2026-11. **[Start with the reading guide →](Claude_AI_Bible_00_全书导读.md)** — book structure, ten core takeaways, and reading paths by role. You can take its judgment framework without reading the whole book first.
 
 An **operator's manual**, not an AI primer. The author has shipped real systems for clients; the book runs from Anthropic's corporate structure to production guardrails and billing, with almost no papers and a lot of "why it behaves this way" and "how to make it do your work".
 
@@ -206,7 +210,7 @@ master-in-claude.skill/
 │     └─ glossary.md            terminology
 ├─ facts/current.yaml        58 facts, each dated and sourced
 ├─ docs/                      update conventions and sources
-├─ 00_全书导读.md              Chinese reading guide (book structure + ten takeaways)
+├─ Claude_AI_Bible_00_全书导读.md  Chinese reading guide (structure + ten takeaways)
 ├─ CHANGELOG.md
 └─ NOTICE.md
 ```
@@ -218,11 +222,7 @@ cp -r skill .claude/skills/claude-ai-bible-advisor
 cp -r skill ~/.claude/skills/claude-ai-bible-advisor
 ```
 
-**WorkBuddy**
-
-```bash
-cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor
-```
+Note: WorkBuddy users run `cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor`.
 
 ---
 

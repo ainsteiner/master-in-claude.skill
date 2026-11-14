@@ -28,7 +28,7 @@
 - `skill/`（SKILL.md 与全部 references）
 - `facts/current.yaml`
 - `docs/UPDATE-STYLE.md`、`docs/SOURCES.md`
-- `00_全书导读.md`
+- `Claude_AI_Bible_00_全书导读.md`
 - `README.md`、`CHANGELOG.md`、本文件
 
 许可全文：https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode

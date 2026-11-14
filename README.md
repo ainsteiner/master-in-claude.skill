@@ -25,22 +25,6 @@
 
 ---
 
-## 30 秒装上，马上能用
-
-```bash
-git clone https://github.com/ainsteiner/master-in-claude.skill.git
-mkdir -p ~/.claude/skills
-cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
-```
-
-WorkBuddy 用户把路径换成 `~/.workbuddy/skills/` 即可。装完不用记命令，直接说话：
-
-> 帮我做一套「每周竞品动态周报」的方案，固化下来，下周我让 Sonnet 照着执行
-
-Claude 会给你一份 `SOLUTION.md`，不是一个临时答案。
-
----
-
 ## 四个能力
 
 ### 1 · 在 Claude 里把一个需求固化成方案
@@ -100,6 +84,24 @@ Claude 会指出：「发确认函」是不可逆外部副作用，必须人工�
 
 ---
 
+## 30 秒装上，马上能用
+
+```bash
+git clone https://github.com/ainsteiner/master-in-claude.skill.git
+mkdir -p ~/.claude/skills
+cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
+```
+
+装完不用记命令，直接说话：
+
+> 帮我做一套「每周竞品动态周报」的方案，固化下来，下周我让 Sonnet 照着执行
+
+Claude 会给你一份 `SOLUTION.md`，不是一个临时答案。
+
+注：WorkBuddy 用户把路径换成 `~/.workbuddy/skills/` 即可。
+
+---
+
 ## skill 能力信源
 
 先说清楚它不是拍脑袋写的：**规则来自三类材料，逐条对得上出处。**
@@ -117,6 +119,8 @@ Claude 会指出：「发确认函」是不可逆外部副作用，必须人工�
 ### 信源二：《Claude AI Bible》
 
 **Stephen Clear ｜ Independent ｜ 2026-06-16**
+
+> 中文版已更新至 2026-11，**[先读全书导读 →](Claude_AI_Bible_00_全书导读.md)**：全书骨架、十条核心判断、按角色的阅读路径。不看书也能先拿到它的判断框架。
 
 一本**操作者手册**，不是 AI 科普。作者是给客户交付过真实系统的人，从 Anthropic 的公司结构讲到生产环境的护栏与账单，几乎不谈论文，只谈「它为什么这样行事」和「你该怎么用它干活」。
 
@@ -206,15 +210,9 @@ master-in-claude.skill/
 │     └─ glossary.md            术语对照
 ├─ facts/current.yaml        事实台账（58 条，带日期与来源）
 ├─ docs/                     更新规范与资料来源
-├─ 00_全书导读.md              全书骨架 + 十条核心判断 + 阅读路径
+├─ Claude_AI_Bible_00_全书导读.md  全书骨架 + 十条核心判断 + 阅读路径
 ├─ CHANGELOG.md
 └─ NOTICE.md
-```
-
-**WorkBuddy**
-
-```bash
-cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor
 ```
 
 **Claude Code**（项目级 / 用户级）
@@ -223,6 +221,8 @@ cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor
 cp -r skill .claude/skills/claude-ai-bible-advisor
 cp -r skill ~/.claude/skills/claude-ai-bible-advisor
 ```
+
+注：WorkBuddy 用户执行 `cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor`。
 
 ---
 
