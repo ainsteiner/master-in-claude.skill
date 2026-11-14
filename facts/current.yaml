@@ -1,0 +1,330 @@
+# 事实台账 —— 《Claude AI 宝典》中文版更新用
+# 规则：所有具体型号/价格/日期/参数只允许出现在本文件；正文与 skill 一律引用 id。
+# as_of 为核对日期；tier: official=官方一手 / secondary=二手交叉 / disputed=存疑未裁定
+# 更新方式：小批量更新时只改本文件 + CHANGELOG，正文按 id 引用，不散落事实。
+
+meta:
+  compiled_at: 2026-11-14
+  book_baseline: 2026-06-16
+  next_review: 2026-12-15
+
+models:
+  - id: model.lineup
+    value: {top: "Fable 5.2", opus: "Opus 5.5", sonnet: "Sonnet 5.5", haiku: "Haiku 5.5", restricted: "Mythos 5.2"}
+    as_of: 2026-11-14
+    tier: official
+    source: "anthropic.com/claude-fable-and-mythos-5-2 (2026-11-09); 官方模型总览"
+    supersedes: "book:09 Opus 4.8 / Sonnet 4.6 / Haiku 4.5"
+  - id: model.ids
+    value: {fable: "claude-fable-5-2", opus: "claude-opus-5-5", sonnet: "claude-sonnet-5-5", haiku: "claude-haiku-5-5", mythos: "claude-mythos-5-2"}
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页与 Fable 5.2 公告"
+    supersedes: "book:09 claude-opus-4-8 / claude-sonnet-4-6 / claude-haiku-4-5-20251001"
+  - id: model.default_start
+    value: "Opus 5.5 + medium effort"
+    as_of: 2026-11-14
+    tier: official
+    source: "claude.dev 15-minute Playbooks (Addy Osmani, 2026-11-09)；官方称 Opus 5.5 为推荐日常模型"
+    supersedes: "book:09「Sonnet 4.6 是你该默认选的干活主力」"
+    note: "方法论反转：从「省单价」改为「省总工作量」"
+  - id: model.default_code
+    value: "Opus 5.5（Claude Code 默认模型）"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "The Agent Times 转述 claude.dev playbook (2026-11-09)"
+  - id: model.effort
+    value: [low, medium, high, xhigh, max]
+    as_of: 2026-11-14
+    tier: official
+    source: "Opus 5.5 / Fable 5.2 模型文档（自适应思考 + effort 档位）"
+    supersedes: "book:09/14 固定 thinking budget、extended thinking 开关"
+    note: "固定 thinking: enabled/disabled 被拒；默认 effort：Fable high、Opus medium、Sonnet high、Haiku medium"
+  - id: model.context_window
+    value: "1,000,000 tokens（全系默认，无需 beta header）"
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页；Claude 文档 Context windows"
+    supersedes: "book:09「量级在二十万 token，有些档位还更大」"
+  - id: model.max_output
+    value: "128,000 tokens"
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页"
+  - id: model.knowledge_cutoff
+    value: "2026-06"
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页"
+  - id: model.retirements
+    value: "Sonnet 4.5 于 2026-11-30 从 API 退役；Opus 4.1 / Sonnet 4 / Opus 4 已退役"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "多家交叉（smartworkflowlab 等），须以官方 deprecations 页终核"
+
+pricing:
+  - id: price.fable52
+    value: {input: 8, output: 40, unit: "USD/MTok", cache_read: 0.20, fast_mode: {input: 16, output: 80}}
+    as_of: 2026-11-14
+    tier: official
+    source: "anthropic.com/claude-fable-and-mythos-5-2"
+    supersedes: "Fable 5.1 的 10/50"
+  - id: price.opus55
+    value: {input: 4, output: 20, unit: "USD/MTok"}
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页"
+  - id: price.sonnet55
+    value: {input: 2, output: 10, unit: "USD/MTok", cache_read: 0.10}
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页"
+  - id: price.haiku55
+    value: {input: 0.10, output: 0.50, unit: "USD/MTok", above_100k: {input: 0.50, output: 2.50}}
+    as_of: 2026-11-14
+    tier: official
+    source: "官方模型页（按提示长度分档计价）"
+  - id: price.cache_ttl
+    value: {default: "5 分钟（每次命中刷新）", long: "1 小时（写入 2x 溢价）"}
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude 文档 Prompt caching"
+  - id: price.cache_breakpoints
+    value: "每请求最多 4 个断点；前缀须 byte-exact；多数模型最小 1024 token"
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude 文档 Prompt caching"
+
+api:
+  - id: api.version
+    value: "2026-10-21"
+    as_of: 2026-11-14
+    tier: official
+    source: "platform.claude.com/docs/en/api/migration-2026-10-21"
+    note: "2023-06-01 未废弃；SDK 2.0 / ant CLI 2.0 默认使用新版"
+  - id: api.sampling_params
+    value: removed
+    as_of: 2026-10-21
+    tier: official
+    source: "同上"
+    effect: "传 temperature / top_p / top_k 返回 400，即使等于默认值；无替代设置"
+  - id: api.content_placements
+    value: "assistant 消息中的 document 块、user 消息中的非空 citations 均返回 400"
+    as_of: 2026-10-21
+    tier: official
+    source: "同上"
+  - id: api.thinking_config
+    value: "移除 thinking: {type: enabled|disabled}，改选 effort 级别"
+    as_of: 2026-09
+    tier: official
+    source: "platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5"
+  - id: api.tool_choice
+    value: "any / tool 改为 auto + 严格工具使用"
+    as_of: 2026-09
+    tier: official
+    source: "同上"
+  - id: api.computer_use
+    value: "computer_20251124 → computer_toolset_20260801"
+    as_of: 2026-11
+    tier: official
+    source: "Fable 5.2 迁移说明 + Opus 5.5 迁移指南"
+  - id: api.compaction
+    value: "服务端 compaction（compact-2026-01-12 等），按 input_tokens 阈值触发"
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude 文档 Compaction"
+
+surfaces:
+  - id: surface.unified
+    value: "统一 Claude（chat + Cowork + Artifacts 合一，对话可升级为云执行）"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "TechCrunch 2026-09-16；Claude Marketplace Digest 2026-10-27（Enterprise GA 2026-10-23）"
+    supersedes: "book:19「Cowork 是独立界面/独立 tab」"
+    note: "Enterprise 默认启用 2026-11-16；Pro/Max 于 9 月先行"
+  - id: surface.unified_exclusions
+    value: "ZDR / HIPAA-ready / CMEK 组织暂不适用"
+    as_of: 2026-10-27
+    tier: secondary
+    source: "Claude Marketplace Digest"
+  - id: surface.duet
+    value: "Claude Duet：主动式个人 agent，运行 Opus 5.5，6000+ connectors，research preview（美国 Pro/Max 候补）"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "TechCrunch / aisquadx / claudemarketplace"
+    note: "发送消息、付款、签署、删除前必须人工批准；证券交易与账户间转账硬禁止"
+  - id: surface.docs_slides
+    value: "Claude Docs / Slides：可创建编辑并导出 PDF / PowerPoint"
+    as_of: 2026-09-16
+    tier: secondary
+    source: "TechCrunch"
+  - id: surface.cowork_legacy
+    value: "Cowork 已并入统一界面，不再作为独立入口"
+    as_of: 2026-10-23
+    tier: secondary
+    source: "同上"
+
+claude_code:
+  - id: cc.auto_mode
+    value: "Auto Mode 默认开启（2026-08 起，Pro/Max/Team）"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "Claude Code Handbook 2e；官方博客（8/7 与 8/14 两说）"
+    note: "口径冲突：记为「2026-08 起」，不写具体日"
+  - id: cc.commands_merged
+    value: ".claude/commands/x.md 与 .claude/skills/x/SKILL.md 等价，斜杠命令并入 Skills"
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude Code 文档 / 官方博客"
+    supersedes: "book:23 斜杠命令作为独立机制"
+  - id: cc.agents_md
+    value: "无 CLAUDE.md 时读取 AGENTS.md（v2.1.277 起，2026-09-18）"
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude Code 文档"
+  - id: cc.claude_md_limit
+    value: "单文件目标 <200 行；超长降低遵循率；按路径拆分 rules"
+    as_of: 2026-11-14
+    tier: official
+    source: "claude.md 文档「How Claude remembers your project」"
+  - id: cc.doctor
+    value: "/doctor prompt-audit：检查过时/冲突指令，需 v2.1.283+"
+    as_of: 2026-11-14
+    tier: official
+    source: "同上"
+  - id: cc.worktree
+    value: "原生 --worktree / -w；forked sessions 各自独立 worktree"
+    as_of: 2026-11-14
+    tier: official
+    source: "Claude Code 文档 / changelog"
+  - id: cc.goal
+    value: "/goal 定义完成条件；Stop hook 可作为确定性闸门；verification subagent 提供第二意见"
+    as_of: 2026-11-14
+    tier: official
+    source: "Anthropic《Best practices for Claude Code》"
+  - id: cc.mods
+    value: "mods：TypeScript 进程内扩展，可改写提示词/拦截工具/清密；无沙箱；需 v2.1.287+"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "Claude Code Handbook 2e"
+  - id: cc.onfailure
+    value: "Hook 支持 onFailure: block（v2.1.295）"
+    as_of: 2026-10-20
+    tier: secondary
+    source: "Claude Marketplace Digest"
+  - id: cc.baseline_tokens
+    value: "Claude Code 每请求基线约 33,000 tokens（社区测量，厂商未确认）"
+    as_of: 2026-11-14
+    tier: secondary
+    source: "Claude Code Handbook 2e"
+
+agent_design:
+  - id: agent.managed_three
+    value: "Managed Agents 拆为 session（append-only 事件日志）/ harness（循环）/ sandbox（执行环境）"
+    as_of: 2026-04-08
+    tier: official
+    source: "Anthropic Managed Agents 研究文章"
+    note: "p50 首 token 延迟降约 60%、p95 降超 90%（厂商自述）"
+  - id: agent.credential_isolation
+    value: "凭证不进运行生成代码的 sandbox；Git 用 clone 注入 remote token，MCP 用 vault+proxy"
+    as_of: 2026-04-08
+    tier: official
+    source: "同上"
+  - id: agent.evaluator_split
+    value: "Planner → Generator ⇄ Evaluator；独立评估器解决自评偏见"
+    as_of: 2026-03-24
+    tier: official
+    source: "Anthropic Labs 三智能体文章；官方 best practices 亦建议 verification subagent"
+  - id: agent.advisor
+    value: "Fable 5.2 可担任 Advisor（被小模型咨询）或 Orchestrator（向小模型派活）"
+    as_of: 2026-11-09
+    tier: official
+    source: "Fable 5.2 公告"
+  - id: agent.harness_decay
+    value: "harness 组件编码了「模型做不到什么」的假设，模型升级后应逐项复核并删除"
+    as_of: 2026-04-08
+    tier: official
+    source: "Anthropic Managed Agents / 上下文工程博客"
+  - id: agent.context_hygiene
+    value: "五个杠杆：缓存稳定前缀 / 清理工具结果 / compaction / 按需检索 / 子智能体隔离"
+    as_of: 2026-11-14
+    tier: official
+    source: "Anthropic 上下文工程；Claude 文档 Compaction / Tool search"
+  - id: agent.tool_search
+    value: "ToolSearch 延迟加载：只载入工具名，使用时才取 schema"
+    as_of: 2026-07-24
+    tier: official
+    source: "上下文工程博客"
+
+prompting:
+  - id: prompt.reduce_rules
+    value: "官方为 Claude Code 删除 80%+ 系统提示词，编码评测无可测损失"
+    as_of: 2026-07-24
+    tier: official
+    source: "claude.dev《The new rules of context engineering for Claude 5 generation models》"
+    note: "范围为常驻上下文（system prompt / CLAUDE.md / Skills），不等于否定一次性提示词的 few-shot"
+  - id: prompt.then_now
+    value:
+      - "给规则 → 让模型用判断"
+      - "给工具使用示例 → 设计接口（参数表达力）"
+      - "全部前置 → 渐进披露"
+      - "重复强调 → 指令只放工具描述"
+      - "手动写 CLAUDE.md 记忆 → auto-memory"
+      - "简单 markdown spec → rich references（HTML artifact / 测试套件 / rubric）"
+    as_of: 2026-07-24
+    tier: official
+    source: "同上"
+  - id: prompt.claude_md
+    value: "轻量，只写仓库用途与 gotchas；不写 Claude 自己能看出来的 obvious；验证类指令拆成 skill 引用"
+    as_of: 2026-07-24
+    tier: official
+    source: "同上"
+  - id: prompt.skill_style
+    value: "Skill 是轻量指南；避免过度约束；长 skill 拆多文件；Gotchas 段是最高信号内容"
+    as_of: 2026-07-24
+    tier: official
+    source: "同上 + Thariq Shihipar《How we use skills》(2026-06-03)"
+  - id: prompt.effort_first
+    value: "效果不达预期先调 effort 再换模型；high 以上先比较「升一档」与「换更大模型」的成本"
+    as_of: 2026-11-09
+    tier: official
+    source: "claude.dev playbook"
+
+enterprise:
+  - id: ent.controls
+    value: "四项管控：Efficient mode（限 Sonnet+Haiku）、按角色模型权限、org/group/member 三级 spend limit、池化组预算"
+    as_of: 2026-10-23
+    tier: secondary
+    source: "Claude Marketplace Digest / gethynellis"
+  - id: ent.inference_hooks
+    value: "Enterprise inference hooks GA：推理前由组织安全服务返回 allow/deny"
+    as_of: 2026-10-27
+    tier: secondary
+    source: "gethynellis"
+  - id: ent.web_fetch
+    value: "管理员可整体禁用 web fetch，或按域名白/黑名单限制"
+    as_of: 2026-10-27
+    tier: secondary
+    source: "同上"
+  - id: ent.security
+    value: "Claude Security：持续仓库扫描、跨仓库发现、修复跟踪，public beta"
+    as_of: 2026-10-21
+    tier: secondary
+    source: "Claude Marketplace Digest"
+
+conflicts:
+  - id: conflict.opus55_date
+    value: "官方 lineup 记 2026-09-22；新闻页记 2026-11-06"
+    action: "正文写「2026 年 9 月下旬」，不写具体日"
+  - id: conflict.automode_date
+    value: "8/7 与 8/14 两说"
+    action: "写「2026 年 8 月起」"
+  - id: conflict.fable51_date
+    value: "9/1 与 9/2 两说"
+    action: "写「2026 年 9 月初」"
+  - id: conflict.sonnet5_price
+    value: "原价 2/10 于 8/10 转常态 vs 原定 9/1 涨至 3/15"
+    action: "只写当前 Sonnet 5.5 价格"
+  - id: conflict.fable5_export
+    value: "6/12–6/30 因出口管制暂停，仅见百科类二手"
+    action: "不写入正文"

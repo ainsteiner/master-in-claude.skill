@@ -1,0 +1,31 @@
+# 不上传（book 因版权原因只在仓库外单独索取）
+/book/
+/handbook-src/
+/handbook/
+：原书英文正文、旧版译本、第三方站点正文副本、内部工具与方案
+/en/
+/zh/
+/zh_v1/
+/dist/
+/dist_v1/
+/sources/
+*.py
+/manifest.json
+/outline.md
+/validation-report.json
+/UPDATE-PLAN-v1.md
+/TERMS.md
+/UPDATE-STYLE.md
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 临时文件
+*.tmp
+*.bak
+~$*

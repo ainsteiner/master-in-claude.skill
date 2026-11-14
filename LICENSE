@@ -1,0 +1,20 @@
+本仓库采用分部分许可，详见 NOTICE.md。
+
+1. 原书《Claude AI Bible》（Stephen Clear, 2026-06-16）
+   著作权归作者及出版方所有。本仓库不包含原书英文正文，也不包含完整中文译本；
+   中文译文为演绎作品，仅供个人学习与技术交流，禁止商业使用与二次分发。
+
+2. 本仓库原创部分
+   skill/ 、facts/ 、docs/ 、00_全书导读.md 、README.md 、CHANGELOG.md
+   采用 CC BY-NC-SA 4.0（署名—非商业性使用—相同方式共享 4.0 国际）。
+   许可全文：https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+3. 第三方来源
+   仅引用公开资料中的事实与结论，不二次分发其正文；权利归各来源方。
+
+4. 无担保
+   型号、价格、参数、可用性均为核对时点快照（见 facts/current.yaml 的 as_of），
+   动手前请以 Anthropic 官方文档为准。
+
+5. 下架
+   权利人如有异议，请联系维护者；核实后 72 小时内删除或下架。
