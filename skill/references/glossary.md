@@ -10,6 +10,9 @@ Claude、Anthropic、Claude Code、Claude Cowork、Claude in Chrome、Claude in 
 |---|---|
 | 提示词 | prompt |
 | 提示词优化 | prompt optimization |
+| 跨模型提示词优化 | cross-model prompt optimization |
+| 目标模型 | target model |
+| 通用层 / 模型适配层 | model-agnostic layer / model adaptation layer |
 | 提示词工程 | prompt engineering |
 | 系统提示词 / 用户提示词 | system prompt / user prompt |
 | 常驻上下文 | always-on context |

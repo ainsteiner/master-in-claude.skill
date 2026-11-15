@@ -1,0 +1,290 @@
+{
+  "meta": {
+    "generated_at": "2026-11-15T10:13:43",
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "max_rounds": 2,
+    "skill_version": "2.1.0",
+    "note": "同一任务、同一输入、同一调用参数；判据为可执行 pass/fail，非人工打分。"
+  },
+  "cases": [
+    {
+      "id": "industry_brief",
+      "task": "从行业资料抽取结构化动态要点",
+      "rules_applied": [
+        "D04",
+        "D05",
+        "D12",
+        "X09",
+        "X10",
+        "D16",
+        "K02",
+        "K03",
+        "K04",
+        "V04"
+      ],
+      "raw": {
+        "passed": false,
+        "passed_first_try": false,
+        "rounds_used": 2,
+        "prompt_tokens": 1263,
+        "completion_tokens": 2048,
+        "total_tokens": 3311,
+        "latency_s": 13.215,
+        "final_fail_reasons": [
+          "输出不是可直接解析的 JSON 对象（JSONDecodeError）"
+        ],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": false,
+            "fail_reasons": [
+              "输出不是可直接解析的 JSON 对象（JSONDecodeError）"
+            ],
+            "total_tokens": 1124,
+            "prompt_tokens": 100,
+            "completion_tokens": 1024,
+            "latency_s": 8.777,
+            "finish": "length",
+            "output": "# 工业机器人行业深度分析：出货量增长与资本开支背离下的结构性信号\n\n## 一、核心判断\n\n2026年11月这组数据呈现出一个**\"量增、结构变、供给改善、但需求端未确认\"**的组合。协作机器人占比升至27%是结构性拐点信号，泵阀交付周期缩短反映供应链瓶颈缓解，但下游汽车与3C资本开支指引未同步上修，意味着当前出货增长更多来自**存量替换、中小客户渗透与渠道补库**，而非大客户新一轮产能扩张周期。券商上调盈利预测存在\"用当期出货线性外推\"的风险，需警惕2027年上半年出现出货与订单的剪刀差。\n\n## 二、数据拆解与交叉验证\n\n**1. 18.4%的同比增速：质量比速度更重要**\n\n18.4%的增速放在工业机器人行业历史区间中属于中高水位（行业景气期通常20%+，低谷期个位数）。关键在于拆解增长来源：\n\n- **基数效应**：需确认2025年11月是否处于低基数（如受某类下游资本开支推迟影响），若如此，18.4%的含金量需打折。\n- **结构性替代**：协作机器人占比27%意味着协作机器人增速显著高于整体（若协作机器人去年同期占比约20%，则其同比增速约60%），这是增长的主要边际贡献者。\n- **区域与客户结构**：增长是否集中于中小制造企业、新能源（锂电/光伏）等非汽车3C领域，是判断可持续性的关键。若增长来自长尾客户，则对资本开支周期的敏感度较低，但也意味着单客户价值量小、回款"
+          },
+          {
+            "round": 2,
+            "passed": false,
+            "fail_reasons": [
+              "输出不是可直接解析的 JSON 对象（JSONDecodeError）"
+            ],
+            "total_tokens": 2187,
+            "prompt_tokens": 1163,
+            "completion_tokens": 1024,
+            "latency_s": 4.438,
+            "finish": "length",
+            "output": "{\n  \"title\": \"工业机器人行业深度分析：出货量增长与资本开支背离下的结构性信号\",\n  \"core_judgment\": \"2026年11月数据呈现量增、结构变、供给改善、但需求端未确认的组合。协作机器人占比升至27%是结构性拐点信号，泵阀交付周期缩短反映供应链瓶颈缓解，但下游汽车与3C资本开支指引未同步上修，意味着当前出货增长更多来自存量替换、中小客户渗透与渠道补库，而非大客户新一轮产能扩张周期。券商上调盈利预测存在用当期出货线性外推的风险，需警惕2027年上半年出现出货与订单的剪刀差。\",\n  \"data_analysis\": {\n    \"growth_18_4pct\": {\n      \"summary\": \"18.4%的同比增速属于行业历史区间中高水位，质量比速度更重要。\",\n      \"points\": [\n        \"基数效应：需确认2025年11月是否处于低基数，若受某类下游资本开支推迟影响，18.4%的含金量需打折。\",\n        \"结构性替代：协作机器人占比27%意味着其增速显著高于整体，若去年同期占比约20%，则协作机器人同比增速约60%，是增长的主要边际贡献者。\",\n        \"区域与客户结构：增长是否集中于中小制造企业、新能源等非汽车3C领域，是判断可持续性的关键。长尾客户对资本开支周期敏感度低，但单客户价值量小、回款周期长"
+          }
+        ]
+      },
+      "optimized": {
+        "passed": true,
+        "passed_first_try": true,
+        "rounds_used": 1,
+        "prompt_tokens": 259,
+        "completion_tokens": 56,
+        "total_tokens": 315,
+        "latency_s": 0.774,
+        "final_fail_reasons": [],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": true,
+            "fail_reasons": [],
+            "total_tokens": 315,
+            "prompt_tokens": 259,
+            "completion_tokens": 56,
+            "latency_s": 0.774,
+            "finish": "stop",
+            "output": "{\"sector\":\"工业机器人\",\"signal\":\"2026年11月出货量同比增长18.4%，协作机器人占比升至27%\",\"direction\":\"up\",\"evidence\":[\"2026年11月出货量同比增长18.4%\",\"协作机器人占比升至27%\"]}"
+          }
+        ]
+      },
+      "delta": {
+        "quality": "优化版通过、原始版未通过",
+        "total_tokens_saved": 2996,
+        "total_tokens_saved_pct": 90.5,
+        "retries_saved": 1
+      }
+    },
+    {
+      "id": "ticket_triage",
+      "task": "把用户反馈分派给团队并给出紧急度",
+      "rules_applied": [
+        "D04",
+        "D05",
+        "D12",
+        "X09",
+        "X10",
+        "D16",
+        "K02",
+        "K03",
+        "K04",
+        "V04"
+      ],
+      "raw": {
+        "passed": false,
+        "passed_first_try": false,
+        "rounds_used": 2,
+        "prompt_tokens": 338,
+        "completion_tokens": 286,
+        "total_tokens": 624,
+        "latency_s": 3.388,
+        "final_fail_reasons": [
+          "team 不在枚举内",
+          "urgency 不在枚举内",
+          "reason 必须是非空字符串且不超过 30 字"
+        ],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": false,
+            "fail_reasons": [
+              "输出不是可直接解析的 JSON 对象（JSONDecodeError）"
+            ],
+            "total_tokens": 242,
+            "prompt_tokens": 57,
+            "completion_tokens": 185,
+            "latency_s": 2.22,
+            "finish": "stop",
+            "output": "这条反馈应分给**财务/发票团队**和**账号/登录支持团队**（或由客服一线统一受理后分别流转），紧急程度为**高**。\n\n理由：\n1. **发票问题**：用户明确提供了订单号 A20261108，且说明“明天就要拿去报销”，属于有时间节点的业务事项，影响用户报销，需优先处理。应流转给负责发票开具/发送的财务或订单支持团队。\n2. **验证码收不到**：属于登录/账号访问问题，影响用户正常使用，需流转给账号/登录技术支持团队排查短信/邮件通道或风控拦截。\n3. **整体紧急程度为高**：发票有明确次日截止时间，验证码问题又影响登录，二者叠加会显著影响用户体验和业务办理，建议按高优先级工单处理，并先回复用户已受理、预计处理时限。"
+          },
+          {
+            "round": 2,
+            "passed": false,
+            "fail_reasons": [
+              "team 不在枚举内",
+              "urgency 不在枚举内",
+              "reason 必须是非空字符串且不超过 30 字"
+            ],
+            "total_tokens": 382,
+            "prompt_tokens": 281,
+            "completion_tokens": 101,
+            "latency_s": 1.168,
+            "finish": "stop",
+            "output": "{\"team\":[\"财务/发票团队\",\"账号/登录支持团队\"],\"urgency\":\"高\",\"reason\":\"发票问题有明确次日报销截止时间且用户提供了订单号A20261108，需优先流转财务/发票团队处理；验证码收不到影响登录使用，需流转账号/登录支持团队排查短信或邮件通道及风控拦截；两项叠加影响用户体验和业务办理，建议按高优先级工单处理并先回复用户已受理及预计处理时限。\"}"
+          }
+        ]
+      },
+      "optimized": {
+        "passed": true,
+        "passed_first_try": true,
+        "rounds_used": 1,
+        "prompt_tokens": 194,
+        "completion_tokens": 23,
+        "total_tokens": 217,
+        "latency_s": 0.984,
+        "final_fail_reasons": [],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": true,
+            "fail_reasons": [],
+            "total_tokens": 217,
+            "prompt_tokens": 194,
+            "completion_tokens": 23,
+            "latency_s": 0.984,
+            "finish": "stop",
+            "output": "{\"team\":\"billing\",\"urgency\":\"P1\",\"reason\":\"发票未收到，明天报销，尽快处理\"}"
+          }
+        ]
+      },
+      "delta": {
+        "quality": "优化版通过、原始版未通过",
+        "total_tokens_saved": 407,
+        "total_tokens_saved_pct": 65.2,
+        "retries_saved": 1
+      }
+    },
+    {
+      "id": "aligned_json_baseline",
+      "task": "同样要求 JSON 时，规则本身是否仍带来差异",
+      "rules_applied": [
+        "D05",
+        "D12",
+        "X09",
+        "X10",
+        "D16",
+        "K02",
+        "K03",
+        "K04",
+        "V04"
+      ],
+      "raw": {
+        "passed": false,
+        "passed_first_try": false,
+        "rounds_used": 2,
+        "prompt_tokens": 1148,
+        "completion_tokens": 1669,
+        "total_tokens": 2817,
+        "latency_s": 10.006,
+        "final_fail_reasons": [
+          "字段集合不符：缺 ['direction', 'evidence', 'sector', 'signal']，多 ['依据', '方向', '核心信号', '行业']",
+          "sector 必须是非空字符串且不超过 12 字",
+          "signal 必须是非空字符串且不超过 40 字",
+          "direction 不在 up/down/flat 枚举内",
+          "evidence 必须是恰好 2 项数组"
+        ],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": false,
+            "fail_reasons": [
+              "输出不是可直接解析的 JSON 对象（JSONDecodeError）"
+            ],
+            "total_tokens": 1000,
+            "prompt_tokens": 109,
+            "completion_tokens": 891,
+            "latency_s": 6.734,
+            "finish": "stop",
+            "output": "```json\n{\n  \"行业\": \"工业自动化（工业机器人及泵阀类核心零部件）\",\n  \"核心信号\": [\n    {\n      \"信号\": \"2026年11月国内工业机器人出货量同比增长18.4%\",\n      \"性质\": \"需求端景气验证\",\n      \"解读\": \"出货量是已兑现的订单交付，反映真实需求而非预期，增速接近20%属较强区间，说明自动化设备需求处于扩张周期。\"\n    },\n    {\n      \"信号\": \"协作机器人占比升至27%\",\n      \"性质\": \"结构性升级信号\",\n      \"解读\": \"协作机器人单价与毛利通常高于传统六轴，占比提升意味着产品结构改善，利好板块收入质量与盈利能力，同时反映下游应用场景向柔性化、人机协同方向迁移。\"\n    },\n    {\n      \"信号\": \"泵阀类零部件进口交付周期由12周缩短至8周\",\n      \"性质\": \"供给端改善信号\",\n      \"解读\": \"交付周期缩短约33%，指向海外供应链紧张缓解或国产替代/库存补充见效，意味着此前制约交付的供给瓶颈松动，行业产能利用率与交付能力提升，但也可能隐含后续供给宽松、价格竞争加剧的潜在风险。\"\n    },\n    {\n      \"信号\": \"多家券商上调自动化板块全年盈利预测\",\n      \"性质\": \"预期面正向修正\",\n      "
+          },
+          {
+            "round": 2,
+            "passed": false,
+            "fail_reasons": [
+              "字段集合不符：缺 ['direction', 'evidence', 'sector', 'signal']，多 ['依据', '方向', '核心信号', '行业']",
+              "sector 必须是非空字符串且不超过 12 字",
+              "signal 必须是非空字符串且不超过 40 字",
+              "direction 不在 up/down/flat 枚举内",
+              "evidence 必须是恰好 2 项数组"
+            ],
+            "total_tokens": 1817,
+            "prompt_tokens": 1039,
+            "completion_tokens": 778,
+            "latency_s": 3.272,
+            "finish": "stop",
+            "output": "{\"行业\":\"工业自动化（工业机器人及泵阀类核心零部件）\",\"核心信号\":[{\"信号\":\"2026年11月国内工业机器人出货量同比增长18.4%\",\"性质\":\"需求端景气验证\",\"解读\":\"出货量是已兑现的订单交付，反映真实需求而非预期，增速接近20%属较强区间，说明自动化设备需求处于扩张周期。\"},{\"信号\":\"协作机器人占比升至27%\",\"性质\":\"结构性升级信号\",\"解读\":\"协作机器人单价与毛利通常高于传统六轴，占比提升意味着产品结构改善，利好板块收入质量与盈利能力，同时反映下游应用场景向柔性化、人机协同方向迁移。\"},{\"信号\":\"泵阀类零部件进口交付周期由12周缩短至8周\",\"性质\":\"供给端改善信号\",\"解读\":\"交付周期缩短约33%，指向海外供应链紧张缓解或国产替代、库存补充见效，意味着此前制约交付的供给瓶颈松动，行业产能利用率与交付能力提升，但也可能隐含后续供给宽松、价格竞争加剧的潜在风险。\"},{\"信号\":\"多家券商上调自动化板块全年盈利预测\",\"性质\":\"预期面正向修正\",\"解读\":\"盈利预测上调基于出货高增与交付改善的量价逻辑，属于对已发生数据的滞后确认，需警惕预期已部分计入股价。\"},{\"信号\":\"下游汽车与3C行业资本开支指引未同步上修\",\"性质\":\"关键背离/警示信号\",\"解读\":\"汽车与3C是工业机器人两大核心下游，其资本开支指引是设备需求的领先指标"
+          }
+        ]
+      },
+      "optimized": {
+        "passed": true,
+        "passed_first_try": true,
+        "rounds_used": 1,
+        "prompt_tokens": 259,
+        "completion_tokens": 50,
+        "total_tokens": 309,
+        "latency_s": 0.747,
+        "final_fail_reasons": [],
+        "rounds": [
+          {
+            "round": 1,
+            "passed": true,
+            "fail_reasons": [],
+            "total_tokens": 309,
+            "prompt_tokens": 259,
+            "completion_tokens": 50,
+            "latency_s": 0.747,
+            "finish": "stop",
+            "output": "{\"sector\":\"工业机器人\",\"signal\":\"2026年11月出货量同比增长18.4%\",\"direction\":\"up\",\"evidence\":[\"协作机器人占比升至27%\",\"泵阀进口交付周期由12周缩短至8周\"]}"
+          }
+        ]
+      },
+      "delta": {
+        "quality": "优化版通过、原始版未通过",
+        "total_tokens_saved": 2508,
+        "total_tokens_saved_pct": 89.0,
+        "retries_saved": 1
+      }
+    }
+  ],
+  "summary": {
+    "cases": 3,
+    "raw_passed": 0,
+    "optimized_passed": 3,
+    "raw_first_try": 0,
+    "optimized_first_try": 3,
+    "raw_total_tokens": 6752,
+    "optimized_total_tokens": 841,
+    "tokens_saved": 5911,
+    "tokens_saved_pct": 87.5,
+    "caveat": "样本 3 条、单次 A/B，仅说明本样本表现；跨模型效果须在目标模型上各自复测。"
+  }
+}

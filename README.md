@@ -14,12 +14,12 @@
 
 1. 把 2026 年下半年最新的 **Claude 社区教程、官方 playbook、迁移文档和工程博客**读了一遍；
 2. 把两本书逐章读完——**《Claude AI Bible》** 和 **《Claude Code Handbook》第二版**；
-3. 去掉重复的、互相冲突的、已经过期的，整理成 **182 条可执行规则**。
+3. 去掉重复的、互相冲突的、已经过期的，整理成 **211 条可执行规则**。
 
 装好之后，它能帮你在 Claude 里做四件事：
 
-1. **在 Claude 里把一个需求固化成方案** —— 让强模型想清楚，写成 `SOLUTION.md`；下次换 Sonnet 或 Haiku，照着这份方案也能做到同样的质量。
-2. **在 Claude 里改好你手上那条提示词** —— 先诊断 16 项，再重写，逐条告诉你为什么这么改。
+1. **给任何模型改好一条提示词（主打）** —— Claude 的核心经验在 Gemini、OpenAI、MiniMax、Kimi、GLM、DeepSeek、Qwen 上通用；国产模型效果较弱，会额外给一份降级写法。输出更准、token 更省。
+2. **在 Claude 里把一个需求固化成方案** —— 让强模型想清楚，写成 `SOLUTION.md`；下次换 Sonnet 或 Haiku，照着这份方案也能做到同样的质量。
 3. **决定这件事该交给 Claude 的哪一档** —— 哪个模型、什么 effort、哪个界面，还是做成 Skill / Subagent / MCP / Hook。
 4. **让 Claude 在上线前挑毛病** —— 不可逆动作、提示注入、花费上限、哪里会翻车。
 
@@ -27,9 +27,47 @@
 
 ## 四个能力
 
-### 1 · 在 Claude 里把一个需求固化成方案
+### 1 · 在 Claude 里给任何模型改好一条提示词（主打）
 
-这是最划算的一个。**强模型负责想清楚，弱模型负责执行。**
+这是这套 skill 的主功能。**从 Claude 提炼出来的规则，约束的是「任务怎么定义」，不是 Claude 专属的语法**——所以换个模型照样成立。
+
+你把原文贴给 Claude，它走五步：
+
+```
+复述需求 → 诊断（16 项清单，只报命中的）→ 重写 → 说明每处改动 → 给验证方法
+```
+
+> 「你是资深分析师，请对以下行业做深度分析，要求专业、全面、有洞察」
+
+Claude 会指出：没有成功标准、没有输出结构、没有读者定义、没有篇幅与判据；然后重写成带字段、带判据的版本，并给一个能跑的 A/B 验证。原文够好时，它会直接说「不用改」。
+
+**分模型适配**在通用改写之后发生，分两层：
+
+| 层 | 做什么 |
+|---|---|
+| 通用层（10 条） | 成功标准可执行、输出结构显式、数据与指令分离、常驻上下文最小化、一条提示词一件事、减规则留判断、不写死会变的型号 |
+| 适配层（8 个模型族） | 按目标模型改写法：字段清单怎么给、规则条数压到多少、长材料怎么定位、失败时怎么拆步 |
+
+| 分级 | 模型 | 说明 |
+|---|---|---|
+| A | Claude、OpenAI（GPT）、Gemini | 通用层可直接落地，长指令遵循与结构化输出稳定 |
+| B | DeepSeek、Qwen、GLM、Kimi、MiniMax | 核心经验仍然通用，**但效果弱于 A 档**：长规则遵循、结构化输出稳定性、单次命中率都更弱，必须压缩写法并附一份降级方案 |
+
+两档都能用，区别只在「要不要降级」。输出附**原版对照 + 逐条改动理由 + A/B 验证方法**，方便回滚；不承诺 token 降幅，只给测法。
+
+**实测（2026-11-15 · deepseek-flash · 3 组 A/B）**
+
+| 指标 | 原始提示词 | skill 优化版 |
+|---|---|---|
+| 判据首次通过 | 0 / 3 | **3 / 3** |
+| 累计 token | 6,752 | **841**（−87.5%） |
+| 返工轮次 | 每组 2 轮 | 每组 1 轮 |
+
+第三组是控制变量：原始版同样被要求「输出 JSON」，仍然失败（自造中文字段名、嵌套结构、代码块包裹），说明差异来自规则本身，不是「加一句要 JSON」。口径：样本 3 条、单次 A/B，只说明本样本表现；换模型要各自复测。脚本见「自己跑一次验证」。
+
+### 2 · 在 Claude 里把一个需求固化成方案
+
+**强模型负责想清楚，弱模型负责执行。**
 
 你只要说一句「先出方案，固化下来，后面让 Sonnet 跑」，Claude 会在项目根目录产出 `SOLUTION.md`，固定八节：
 
@@ -47,20 +85,6 @@
 一次投入，长期复用。以后换 Sonnet、Haiku 甚至换个人接手，把第 7 节贴过去、按第 4 节一步步走，质量不会塌。
 
 它还会告诉你换模型时怎么补偿：effort 不低于 medium、上下文给全、一次只做一到两步、完成后另起一次干净调用验收。
-
-### 2 · 在 Claude 里改好你手上那条提示词
-
-不是给你一条新的，是先诊断再改。你把原文贴给 Claude，它走五步：
-
-```
-复述需求 → 诊断（16 项清单，只报命中的）→ 重写 → 说明每处改动 → 给验证方法
-```
-
-> 「你是资深分析师，请对以下行业做深度分析，要求专业、全面、有洞察」
-
-Claude 会指出：没有成功标准、没有输出结构、没有读者定义、没有篇幅与判据；然后重写成带字段、带判据的版本，并给一个能跑的 A/B 验证。原文够好时，它会直接说「不用改」。
-
-输出附**原版对照 + 逐条改动理由 + 效果可能变松还是变紧**，方便你回滚。
 
 ### 3 · 决定这件事该交给 Claude 的哪一档
 
@@ -86,17 +110,19 @@ Claude 会指出：「发确认函」是不可逆外部副作用，必须人工�
 
 ## 30 秒装上，马上能用
 
+**优先装英文版**：Claude 对英文规则的遵循更稳，同样的规则也更省 token。中文版内容对等，作为备选。
+
 ```bash
 git clone https://github.com/ainsteiner/master-in-claude.skill.git
 mkdir -p ~/.claude/skills
-cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
+cp -r master-in-claude.skill/skill-en ~/.claude/skills/claude-ai-bible-advisor
 ```
 
 装完不用记命令，直接说话：
 
-> 帮我做一套「每周竞品动态周报」的方案，固化下来，下周我让 Sonnet 照着执行
+> 帮我改这条提示词，我要拿去 DeepSeek 上用
 
-Claude 会给你一份 `SOLUTION.md`，不是一个临时答案。
+Claude 会给你一份带原版对照、逐条改动理由和 A/B 验证方法的优化单，不是一个临时答案。
 
 注：WorkBuddy 用户把路径换成 `~/.workbuddy/skills/` 即可。
 
@@ -196,11 +222,15 @@ Claude 会给你一份 `SOLUTION.md`，不是一个临时答案。
 
 ```
 master-in-claude.skill/
-├─ skill/                     ← 装这个
+├─ skill-en/                  ← 推荐装这个（英文版，优先使用）
+│  ├─ SKILL.md
+│  └─ references/           10 个文件，规则 ID 与中文版逐条一致
+├─ skill/                    ← 中文版（备选，内容对等）
 │  ├─ SKILL.md
 │  └─ references/
+│     ├─ cross-model-prompts.md 跨模型提示词优化（通用层 + 8 模型族适配）
 │     ├─ solution-brief.md      方案固化（SOLUTION.md）
-│     ├─ prompt-optimization.md 提示词优化（16 诊断 / 12 手法 / 7 约束）
+│     ├─ prompt-optimization.md 提示词优化（16 诊断 / 12 手法 / 8 约束）
 │     ├─ model-selection.md     模型与 effort 选型
 │     ├─ routing.md             界面与账号路由
 │     ├─ containers.md          容器决策链
@@ -208,6 +238,7 @@ master-in-claude.skill/
 │     ├─ guardrails.md          护栏与核实
 │     ├─ prompting.md           提示词规则
 │     └─ glossary.md            术语对照
+├─ tests/                    A/B 测试脚本 + 实测报告
 ├─ facts/current.yaml        事实台账（58 条，带日期与来源）
 ├─ docs/                     更新规范与资料来源
 ├─ Claude_AI_Bible_00_全书导读.md  全书骨架 + 十条核心判断 + 阅读路径
@@ -215,14 +246,38 @@ master-in-claude.skill/
 └─ NOTICE.md
 ```
 
-**Claude Code**（项目级 / 用户级）
+**Claude Code · 推荐英文版**（项目级 / 用户级）
 
 ```bash
-cp -r skill .claude/skills/claude-ai-bible-advisor
+cp -r skill-en .claude/skills/claude-ai-bible-advisor
+cp -r skill-en ~/.claude/skills/claude-ai-bible-advisor
+```
+
+**备选中文版**（内容与规则 ID 完全对等；两版二选一，别同时装成同一个名字）
+
+```bash
 cp -r skill ~/.claude/skills/claude-ai-bible-advisor
 ```
 
-注：WorkBuddy 用户执行 `cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor`。
+注：WorkBuddy 用户执行 `cp -r skill-en ~/.workbuddy/skills/claude-ai-bible-advisor`。
+
+---
+
+## 自己跑一次验证
+
+`tests/cross_model_prompt_test.py` 给主打能力做 A/B：同一任务、同一输入、同一调用参数，分别跑原始版和 skill 优化版，用**可执行的 pass / fail 判据**比较输出质量、返工轮数和累计 token；不靠人工打分，也不靠印象。
+
+```bash
+python tests/cross_model_prompt_test.py --dry-run                  # 只校验规则联动，不调 API
+python tests/cross_model_prompt_test.py --env-file /path/to/.env  # 实跑
+```
+
+- 默认 `https://api.deepseek.com` + `deepseek-flash`；换模型用 `--base-url` / `--model`，任何 OpenAI 兼容端点都能接。
+- 凭据从 `.env` 或环境变量读取，**不写进报告、不落盘**；`--no-proxy` 可绕过环境代理。
+- 脚本反查 29 个规则 ID 是否真的存在于 skill 文件里，防止测试和规则各写一套。
+- 首次实测报告：`tests/results/deepseek-flash-20261115.json`。
+
+想在 Gemini、Qwen 上验证，换端点和模型名重跑一次即可；国产模型记得看 B 档的降级方案有没有被用上。
 
 ---
 
@@ -243,7 +298,7 @@ Claude 大约每 6–8 周发一次版本。这个仓库跟着走，方式是克
 - 《Claude AI Bible》© 2026 Stephen Clear，著作权归作者及出版方所有。**请支持正版。**
 - 《Claude Code Handbook》© Joey Yu，采用 **CC BY-SA 4.0** 授权；本仓库不包含其正文，合订本仅通过公众号按个人学习申请提供。
 - 本仓库不含原书英文正文，也不含完整中文译本。
-- `skill/`、`facts/`、`docs/`、导读、README 为原创部分，采用 **CC BY-NC-SA 4.0**：可署名转载、非商业使用、相同方式共享。
+- `skill/`、`skill-en/`、`tests/`、`facts/`、`docs/`、导读、README 为原创部分，采用 **CC BY-NC-SA 4.0**：可署名转载、非商业使用、相同方式共享。
 - 文中与台账中的型号、价格、参数均为**核对时点快照**，动手前请以 [Anthropic 官方文档](https://platform.claude.com/docs) 为准。不提供任何担保。
 - 权利人如有异议，请开 Issue 或联系我们，核实后立即处理（包括下架）。
 

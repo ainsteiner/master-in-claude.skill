@@ -11,6 +11,8 @@
 
 前置条件：必须拿到 `prompt_text` 原文。只有意图描述、没有原文时，先要求用户提供，不得凭描述臆造。
 
+- 指定 `target_model`，或要求「给某个模型改写 / 多个模型复用」时，转 `cross-model-prompts.md`：本文件只承担其流程第 2 步的通用诊断与改写，不单独交付（R22 / N08）。
+
 ## 2. 输入槽位
 
 | 字段 | 必需 | 说明 |
@@ -113,6 +115,7 @@ prompt_card:
 | O05 | 必须保留原版对照（`rewritten_prompt` 与原 `prompt_text` 并存），保证可回滚 |
 | O06 | `usage=always_on` 时按 R16 处理：只留 gotchas 与硬约束，能由模型判断的不写成规则 |
 | O07 | 原文已足够好时，明确说「不需要改」，并只给 1–2 条可选微调，不硬凑改动 |
+| O08 | 请求含 `target_model` 时不得只输出 `prompt_card`；必须转 `cross-model-prompts.md` 产出 `cross_model_card` |
 
 ## 8. 反模式
 

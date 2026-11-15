@@ -14,12 +14,12 @@ We did three things:
 
 1. Read through the **latest Claude community guides, official playbooks, migration notes and engineering posts** from the second half of 2026;
 2. Read two books chapter by chapter — **Claude AI Bible** and **Claude Code Handbook, 2nd edition**;
-3. Dropped what was duplicated, contradictory or already outdated, and turned the rest into **182 executable rules**.
+3. Dropped what was duplicated, contradictory or already outdated, and turned the rest into **211 executable rules**.
 
 Once installed, it helps you do four things inside Claude:
 
-1. **Turn a requirement into a reusable plan, inside Claude** — the strong model thinks it through and writes `SOLUTION.md`; next time Sonnet or Haiku can execute at the same quality.
-2. **Fix the prompt you already have, inside Claude** — 16 diagnostics first, then a rewrite with a reason for every change.
+1. **Fix a prompt for any model (primary)** — Claude's core lessons transfer to Gemini, OpenAI, MiniMax, Kimi, GLM, DeepSeek and Qwen; Chinese models underperform, so a degraded variant is included. Sharper output, fewer tokens.
+2. **Turn a requirement into a reusable plan, inside Claude** — the strong model thinks it through and writes `SOLUTION.md`; next time Sonnet or Haiku can execute at the same quality.
 3. **Decide which layer of Claude this belongs to** — which model, what effort, which surface, or whether it should be a Skill / Subagent / MCP / Hook.
 4. **Have Claude poke holes before you ship** — irreversible actions, prompt injection, spend caps, where it breaks.
 
@@ -27,9 +27,47 @@ Once installed, it helps you do four things inside Claude:
 
 ## The four capabilities
 
-### 1 · Turn a requirement into a reusable plan, inside Claude
+### 1 · Fix a prompt for any model, inside Claude (primary)
 
-The highest-leverage one. **The strong model thinks; the cheaper model executes.**
+This is the skill's main job. **The rules distilled from Claude constrain how a task is defined, not Claude-specific syntax** — so they still hold when the model changes.
+
+Paste the original and Claude runs five steps:
+
+```
+Restate intent → Diagnose (16 checks, report only hits) → Rewrite → Explain each change → Give a check
+```
+
+> "You are a senior analyst. Analyse the following industry in depth. Be professional, comprehensive and insightful."
+
+Claude points out: no success criteria, no output structure, no defined reader, no length or acceptance test; then rewrites it with fields and checks, plus a runnable A/B verification. If the original is already good, it says "no change needed".
+
+**Model-specific adaptation** happens after the generic rewrite, in two layers:
+
+| Layer | What it does |
+|---|---|
+| Model-agnostic layer (10 rules) | Executable success criteria, explicit output structure, data/instruction separation, minimal always-on context, one job per prompt, fewer rules and more judgment, no hard-coded model names |
+| Adaptation layer (8 model families) | Changes the wording for the target model: how to list fields, how far to compress the rule count, how to locate content in long material, how to split steps on failure |
+
+| Tier | Models | Meaning |
+|---|---|---|
+| A | Claude, OpenAI (GPT), Gemini | The generic layer lands directly; long-instruction following and structured output are stable |
+| B | DeepSeek, Qwen, GLM, Kimi, MiniMax | The core lessons still transfer, **but results are weaker than tier A**: long-rule adherence, structured-output stability and first-pass hit rate all drop, so the writing must be compressed and a degraded variant supplied |
+
+Both tiers work; the difference is only whether a fallback is required. Output includes **the original side by side, the reason for each edit, and an A/B method** so you can roll back. No token reduction is promised — only a way to measure one.
+
+**Measured (2026-11-15 · deepseek-flash · 3 A/B pairs)**
+
+| Metric | Raw prompt | Skill-optimized |
+|---|---|---|
+| Passed on first attempt | 0 / 3 | **3 / 3** |
+| Cumulative tokens | 6,752 | **841** (−87.5%) |
+| Retry rounds | 2 per pair | 1 per pair |
+
+The third pair is a control: the raw prompt was also told to "output JSON" and still failed (invented field names, nesting, wrapped in a code block), which shows the difference comes from the rules rather than from adding the word JSON. Scope: 3 samples, one A/B run — it describes these samples only; re-test on each target model. Script below under "Run the check yourself".
+
+### 2 · Turn a requirement into a reusable plan, inside Claude
+
+**The strong model thinks; the cheaper model executes.**
 
 Say "write the plan first, save it, Sonnet will run it next week" and Claude produces `SOLUTION.md` in your project root, with eight fixed sections:
 
@@ -47,20 +85,6 @@ Say "write the plan first, save it, Sonnet will run it next week" and Claude pro
 One investment, reused indefinitely. Swap in Sonnet, Haiku, or a different person: paste §7, follow §4, quality holds.
 
 It also tells you how to compensate when downgrading: effort no lower than `medium`, give the full context, one or two steps at a time, and verify with a fresh call afterwards.
-
-### 2 · Fix the prompt you already have, inside Claude
-
-It does not hand you a new prompt. It diagnoses first. Paste the original, and Claude runs five steps:
-
-```
-Restate intent → Diagnose (16 checks, report only hits) → Rewrite → Explain each change → Give a check
-```
-
-> "You are a senior analyst. Analyse the following industry in depth. Be professional, comprehensive and insightful."
-
-Claude points out: no success criteria, no output structure, no defined reader, no length or acceptance test; then rewrites it with fields and checks, plus a runnable A/B verification. If the original is already good, it says "no change needed".
-
-Output includes **the original side by side, the reason for each edit, and whether the result got looser or tighter** — so you can roll back.
 
 ### 3 · Decide which layer of Claude this belongs to
 
@@ -86,17 +110,19 @@ Payment, outbound messages, signing and deletion always require a human by defau
 
 ## Install in 30 seconds
 
+**Install the English version first.** Claude follows English rules more reliably, and the same rules cost fewer tokens. The Chinese version is content-equivalent and kept as an alternative.
+
 ```bash
 git clone https://github.com/ainsteiner/master-in-claude.skill.git
 mkdir -p ~/.claude/skills
-cp -r master-in-claude.skill/skill ~/.claude/skills/claude-ai-bible-advisor
+cp -r master-in-claude.skill/skill-en ~/.claude/skills/claude-ai-bible-advisor
 ```
 
 Then just talk:
 
-> Turn my weekly competitor digest into a plan, save it, and let Sonnet execute it next week.
+> Rewrite this prompt for me, I'm going to run it on DeepSeek.
 
-You get a `SOLUTION.md`, not a one-off answer.
+You get an optimization card with the original side by side, a reason for every edit, and an A/B method — not a one-off answer.
 
 Note: WorkBuddy users can use `~/.workbuddy/skills/` instead.
 
@@ -196,11 +222,15 @@ Building a long-term companion agent makes us sensitive to one thing: **models c
 
 ```
 master-in-claude.skill/
-├─ skill/                     ← install this
+├─ skill-en/                  ← install this (English, recommended)
+│  ├─ SKILL.md
+│  └─ references/           10 files, rule IDs identical to the Chinese version
+├─ skill/                    ← Chinese version (alternative, content-equivalent)
 │  ├─ SKILL.md
 │  └─ references/
+│     ├─ cross-model-prompts.md cross-model prompt optimization (generic + 8 families)
 │     ├─ solution-brief.md      plan solidification (SOLUTION.md)
-│     ├─ prompt-optimization.md prompt optimization (16 diagnostics / 12 techniques / 7 constraints)
+│     ├─ prompt-optimization.md prompt optimization (16 diagnostics / 12 techniques / 8 constraints)
 │     ├─ model-selection.md     model and effort selection
 │     ├─ routing.md             surface and account routing
 │     ├─ containers.md          container decision chain
@@ -208,6 +238,7 @@ master-in-claude.skill/
 │     ├─ guardrails.md          guardrails and verification
 │     ├─ prompting.md           prompting rules
 │     └─ glossary.md            terminology
+├─ tests/                    A/B harness + measured results
 ├─ facts/current.yaml        58 facts, each dated and sourced
 ├─ docs/                      update conventions and sources
 ├─ Claude_AI_Bible_00_全书导读.md  Chinese reading guide (structure + ten takeaways)
@@ -215,14 +246,38 @@ master-in-claude.skill/
 └─ NOTICE.md
 ```
 
-**Claude Code** (project-level / user-level)
+**Claude Code · English version (recommended)** (project-level / user-level)
 
 ```bash
-cp -r skill .claude/skills/claude-ai-bible-advisor
+cp -r skill-en .claude/skills/claude-ai-bible-advisor
+cp -r skill-en ~/.claude/skills/claude-ai-bible-advisor
+```
+
+**Chinese alternative** (identical content and rule IDs; pick one, do not install both under the same name)
+
+```bash
 cp -r skill ~/.claude/skills/claude-ai-bible-advisor
 ```
 
-Note: WorkBuddy users run `cp -r skill ~/.workbuddy/skills/claude-ai-bible-advisor`.
+Note: WorkBuddy users run `cp -r skill-en ~/.workbuddy/skills/claude-ai-bible-advisor`.
+
+---
+
+## Run the check yourself
+
+`tests/cross_model_prompt_test.py` A/B-tests the primary capability: same task, same input, same call parameters, once with the raw prompt and once with the skill-optimized prompt. It compares output quality, retry rounds and cumulative tokens using **executable pass/fail criteria** — no human grading, no impressions.
+
+```bash
+python tests/cross_model_prompt_test.py --dry-run                  # rule linkage only, no API call
+python tests/cross_model_prompt_test.py --env-file /path/to/.env  # live run
+```
+
+- Defaults to `https://api.deepseek.com` + `deepseek-flash`; use `--base-url` / `--model` for any OpenAI-compatible endpoint.
+- Credentials come from `.env` or the environment; they are **never written to the report or to disk**. `--no-proxy` bypasses environment proxies.
+- The harness verifies that 29 rule IDs actually exist in the skill files, so the test and the rules cannot drift apart.
+- First measured report: `tests/results/deepseek-flash-20261115.json`.
+
+To verify on Gemini or Qwen, rerun with a different endpoint and model name; for tier-B models, check whether the degraded variant was actually needed.
 
 ---
 
@@ -243,7 +298,7 @@ To get updates: **Watch → Custom → Releases**, or just **Star**.
 - *Claude AI Bible* © 2026 Stephen Clear. All rights reserved by the author and publisher. **Please buy the original.**
 - *Claude Code Handbook* © Joey Yu, licensed **CC BY-SA 4.0**. This repository does not contain its text; the bundled edition is available on request for personal study.
 - This repository contains neither the original English text nor the full Chinese translation.
-- Original parts (`skill/`, `facts/`, `docs/`, the reading guide, this README) are licensed **CC BY-NC-SA 4.0**: share with attribution, non-commercial, same license.
+- Original parts (`skill/`, `skill-en/`, `tests/`, `facts/`, `docs/`, the reading guide, this README) are licensed **CC BY-NC-SA 4.0**: share with attribution, non-commercial, same license.
 - All model names, prices and parameters are **snapshots at verification time**. Check the [official Anthropic docs](https://platform.claude.com/docs) before acting. No warranty.
 - Rights holders: open an issue or contact us; verified requests are handled immediately, including takedown.
 

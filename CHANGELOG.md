@@ -86,6 +86,24 @@
 
 ---
 
+## 2026-11-15 v2.1.0（跨模型主打 + 英文 skill + 实测）
+
+| 项 | 变更 |
+|---|---|
+| 主打能力 | 新增 `skill/references/cross-model-prompts.md`：通用层 K01–K10（模型无关）、适配层 V01–V08（Claude / OpenAI / Gemini 为 A 档；DeepSeek / Qwen / GLM / Kimi / MiniMax 为 B 档，效果较弱需降级）、硬约束 N01–N08、`cross_model_card` schema |
+| SKILL.md | description 改为三件事且跨模型列为主打；新增「跨模型」触发类、`target_model` 槽位、`cross_model` 输出档、R22 / R23、§5.4 与 references 索引；version 2.0.0 → 2.1.0 |
+| prompt-optimization.md | 新增 O08 与适用判定的转出规则，堵住「指定目标模型却只交付通用优化单」 |
+| glossary.md | 增「跨模型提示词优化 / 目标模型 / 通用层 / 模型适配层」4 条术语 |
+| 英文 skill | 新增 `skill-en/`（SKILL.md + 10 个 references），211 条规则 ID 与中文版逐条一致；两版二选一安装，README 明示优先英文版 |
+| 测试 | 新增 `tests/cross_model_prompt_test.py`（纯标准库、OpenAI 兼容、规则 ID 联动校验）；`.gitignore` 放行 `tests/` 及实测报告 |
+| 实测 | 2026-11-15 · `deepseek-flash` · 3 组 A/B：判据首次通过 0/3 → 3/3，累计 token 6,752 → 841（−87.5%），返工 2 轮 → 1 轮；第三组为控制变量（原始版同样要求 JSON 仍失败）；报告 `tests/results/deepseek-flash-20261115.json` |
+| README | 中英两版四能力重排：跨模型优化提到第 1 位并成为主打；安装段改为优先英文版；新增「自己跑一次验证」章节；规则数 182 → 211 |
+| 中文全译本 | 扉页与「作者介绍」补中文版署名「中文版与更新：Ainstein（ainstein.top）」；重跑 `build_outputs.py` 重建 `dist/` 的 MD / HTML / EPUB（按版权约定不随仓库分发） |
+
+规则统计：211 条 ID 全部唯一，中英两版逐文件一致；本次新增 29 条（K10 + V8 + N8 + R2 + O1）。实测结论只覆盖 3 条样本的单次 A/B，换模型须各自复测。
+
+---
+
 ## 后续小批量更新模板
 
 ```

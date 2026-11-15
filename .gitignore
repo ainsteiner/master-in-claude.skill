@@ -17,6 +17,12 @@
 /TERMS.md
 /UPDATE-STYLE.md
 
+# 测试脚本与实测报告随仓库发布
+!tests/
+!tests/*.py
+!tests/results/
+!tests/results/*.json
+
 # 系统与编辑器
 .DS_Store
 Thumbs.db

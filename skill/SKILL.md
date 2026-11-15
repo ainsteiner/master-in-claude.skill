@@ -1,17 +1,18 @@
 ---
 name: claude-ai-bible-advisor
-description: 把《Claude AI 宝典》的判断框架用于两件事：①回答「这件事该怎么用 Claude 做」——该用哪个模型或界面、要不要开 API、要不要上智能体、Skill / MCP / 插件 / CLAUDE.md 怎么选、工具 schema 怎么设计、这套自动化有什么风险、为什么输出泛泛或账单失控；②回答「这条提示词该怎么改」——优化、改写、诊断现有提示词，让它贴合需求并发挥模型能力。第一类产出结构化决策单，第二类产出提示词优化单（原版对照 + 逐条改动理由 + 验证方法），第三类把需求固化成可复用的执行方案（SOLUTION.md），供后续低一档模型按同样思路执行。不适用于：代写代码 / 文档 / 总结本身、其他厂商产品的深度配置、单独查询 Claude 当前版本 / 价格 / beta 资格 / 可用性（指向官方文档）。输出档位只按显式用词判定，用户说「一句话 / 简短 / 速览」才用 brief，不得从时间紧迫、执行时段或请求长短推断。
-version: "2.0.0"
+description: 把《Claude AI 宝典》的判断框架用于三件事：①跨模型提示词优化（主打）——给出提示词原文与目标模型，按通用层 + 模型适配层改写，让 Claude 核心经验在 Gemini / OpenAI / MiniMax / Kimi / GLM / DeepSeek / Qwen 上通用，国产模型效果较弱时给降级方案，提升输出效果并减少 token 消耗；②回答「这件事该怎么用 Claude 做」——该用哪个模型或界面、要不要开 API、要不要上智能体、Skill / MCP / 插件 / CLAUDE.md 怎么选、工具 schema 怎么设计、这套自动化有什么风险、为什么输出泛泛或账单失控；③把需求固化成可复用的执行方案（SOLUTION.md），供后续低一档模型按同样思路执行。分别产出跨模型优化单、结构化决策单、方案固化单（均含原版对照 / 逐条改动理由 / 可执行验证）。不适用于：代写代码 / 文档 / 总结本身、其他厂商产品的深度配置、单独查询 Claude 当前版本 / 价格 / beta 资格 / 可用性（指向官方文档）。输出档位只按显式用词判定，用户说「一句话 / 简短 / 速览」才用 brief，不得从时间紧迫、执行时段或请求长短推断。
+version: "2.1.0"
 license: 仅供个人学习参考；规则源自 Stephen Clear《Claude AI 宝典》(2026-06-16)，并依 Anthropic 2026-07 至 2026-11 公开资料更新
 metadata:
   author: 大为
   source_book: "Claude AI Bible, Stephen Clear, 2026-06-16"
+  supported_target_models: [claude, openai, gemini, deepseek, qwen, glm, kimi, minimax]
   source_zh: "c:/sdw/clawbase/workbuddy/claude-bible-zh/zh/"
   facts_path: "c:/sdw/clawbase/workbuddy/claude-bible-zh/facts/current.yaml"
   as_of: "2026-11-14"
 ---
 
-# Claude 用法决策与提示词优化
+# 跨模型提示词优化与 Claude 用法决策
 
 ## 1. 触发定义
 
@@ -22,6 +23,7 @@ metadata:
 | 评审 | 帮我看看这套、有没有问题、有什么风险、哪里会翻车、review 一下 | 决策单 |
 | 归因 | 为什么输出这么差、为什么这么贵、为什么老跑偏、是不是该换模型 | 决策单 |
 | 优化 | 帮我改这条提示词、优化一下、让它更好用、怎么让模型发挥到最好、这个 prompt 哪里有问题 | 提示词优化单 |
+| 跨模型 | 给 X 模型用、这条提示词在 X 上怎么用、换个模型还灵吗、为 Gemini / DeepSeek / Qwen 改写、多个模型复用同一条 | 跨模型优化单 |
 | 固化 | 先出方案、做成可执行的方案、沉淀成文档让别的模型照着做、用强模型规划弱模型执行 | 方案固化单 |
 
 ### 1.1 不触发
@@ -39,6 +41,7 @@ metadata:
 | `full` | 默认；或显式要求「详细 / 完整 / 展开」 | 全部字段 |
 | `brief` | 仅当显式说「一句话 / 简短 / 速览 / 只要结论」 | 决策单只留 `surface`、`model`、`effort`、`container`、`guardrails`、`verification` |
 | `prompt` | 命中「优化」语义类 | `prompt_card` 全部字段 |
+| `cross_model` | 命中「跨模型」语义类，或「优化」且带 `target_model` | `cross_model_card` 全部字段 |
 | `solution` | 命中「固化」语义类 | `SOLUTION.md` + `solution_card` 全部字段 |
 
 - 禁止从时间紧迫、执行时段、请求字数推断档位。
@@ -49,6 +52,7 @@ metadata:
 | 字段 | 必需 | 取值 |
 |---|---|---|
 | `task` | 是 | 用户要完成的事，原话优先 |
+| `target_model` | 跨模型模式必需 | `claude` / `openai` / `gemini` / `deepseek` / `qwen` / `glm` / `kimi` / `minimax` / `other`；缺失时询问，不得默认填 `claude` |
 | `prompt_text` | 优化模式必需 | 待优化的提示词原文 |
 | `success_criteria` | 否 | 用户如何判断输出合格；缺失时进 `open_questions` |
 | `executor` | 否 | 固化模式的执行者：`same_model` / `weaker_model` / `human` |
@@ -65,7 +69,7 @@ metadata:
 ## 3. 决策流程
 
 1. 抽槽位；缺失项写 `open_questions`。
-2. **判模式**：命中「优化」→ 读 `references/prompt-optimization.md`，产出 `prompt_card`，结束；命中「固化」→ 读 `references/solution-brief.md`，产出 `SOLUTION.md` 与 `solution_card`，结束。其余继续。
+2. **判模式**：命中「跨模型」，或命中「优化」且带 `target_model` → 读 `references/cross-model-prompts.md`，产出 `cross_model_card`，结束；命中「优化」→ 读 `references/prompt-optimization.md`，产出 `prompt_card`，结束；命中「固化」→ 读 `references/solution-brief.md`，产出 `SOLUTION.md` 与 `solution_card`，结束。其余继续。
 3. 读 `references/routing.md`：由 `task` + `data_scope` + `frequency` 定 `task_shape` → `surface` → `account`。
 4. 读 `references/model-selection.md`：定 `model` 与 `effort`。
 5. 读 `references/prompting.md`（方案含提示词设计或输出质量问题）。
@@ -102,6 +106,8 @@ metadata:
 | R19 | harness 每个组件登记其依赖的模型假设，按季度复核，模型已能处理即删除 | cur:agent.harness_decay |
 | R20 | 优化提示词不得改变用户意图、删除硬约束或虚构产品能力；每条改动须指到 D / X 编号，并给验证方法 | convention |
 | R21 | 方案固化必须写被否路线与取舍理由，`rejected` 为空判不合格；换弱模型执行时 effort 不得低于 medium | cur:model.effort |
+| R22 | 指定目标模型的提示词优化必须走 `references/cross-model-prompts.md`；只交付通用 `prompt_card` 判为漏做 | convention |
+| R23 | 不把 Claude 专属产品名 / 参数写进其它模型的提示词；不虚构目标模型能力；不承诺 token 降幅，只给 A/B 测法 | convention |
 
 ## 5. 输出 schema
 
@@ -141,6 +147,10 @@ decision_card:
 
 见 `references/solution-brief.md` §7。产出项目根目录的 `SOLUTION.md`，并回传 `solution_card`。
 
+### 5.4 跨模型优化单
+
+见 `references/cross-model-prompts.md` §6。产出 `cross_model_card`；`tier=B` 时 `degraded_alternative` 与效果较弱声明不得为空。
+
 ## 6. references 索引
 
 | 文件 | 加载条件 |
@@ -149,6 +159,7 @@ decision_card:
 | `references/model-selection.md` | 始终 |
 | `references/guardrails.md` | 始终 |
 | `references/prompt-optimization.md` | 命中「优化」语义类 |
+| `references/cross-model-prompts.md` | 命中「跨模型」语义类，或「优化」且带 `target_model` |
 | `references/solution-brief.md` | 命中「固化」语义类 |
 | `references/prompting.md` | 方案含提示词设计，或用户抱怨输出质量 |
 | `references/containers.md` | 涉及 Skill / Subagent / MCP / 插件 / CLAUDE.md / Hook 选择 |

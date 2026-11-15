@@ -15,7 +15,7 @@
 
 ## 2. 中文译本与更新
 
-- 译者/维护者：本仓库维护者。
+- 译者 / 中文版整理与更新：**Ainstein（ainstein.top）**。
 - 性质：逐段中文翻译 + 2026-11 事实与方法论更新。
 - 使用范围：**个人学习与技术交流**。未经原权利人许可，不得用于商业出版、付费课程、付费社群或任何以营利为目的的分发。
 - **完整中文译本（EPUB / HTML / Markdown）不随公开仓库分发。** 获取方式：关注公众号「爱创星球」，回复「AI圣经」，说明用途后可申请个人学习版。
@@ -25,11 +25,13 @@
 
 以下内容由维护者原创，采用 **CC BY-NC-SA 4.0**（署名—非商业性使用—相同方式共享 4.0 国际）：
 
-- `skill/`（SKILL.md 与全部 references）
+- `skill/`（中文版：SKILL.md 与全部 references）
+- `skill-en/`（英文版：SKILL.md 与全部 references，规则 ID 与中文版逐条一致）
+- `tests/`（跨模型 A/B 测试脚本与实测报告）
 - `facts/current.yaml`
 - `docs/UPDATE-STYLE.md`、`docs/SOURCES.md`
 - `Claude_AI_Bible_00_全书导读.md`
-- `README.md`、`CHANGELOG.md`、本文件
+- `README.md`、`README.en.md`、`CHANGELOG.md`、本文件
 
 许可全文：https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 
