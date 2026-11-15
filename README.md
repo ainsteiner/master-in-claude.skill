@@ -16,7 +16,7 @@
 2. 把两本书逐章读完——**《Claude AI Bible》** 和 **《Claude Code Handbook》第二版**；
 3. 去掉重复的、互相冲突的、已经过期的，整理成 **211 条可执行规则**。
 
-装好之后，它能帮你在 Claude 里做四件事：
+装好之后，它能帮你做四件事：
 
 1. **依托Claude经验为几乎所有主流模型优化提示词** —— Claude 的核心经验在 Gemini、OpenAI、MiniMax、Kimi、GLM、DeepSeek、Qwen 上通用；国产模型效果较弱，会额外给一份降级写法。输出更准、token 更省。
 2. **利用高级别模型蒸馏需求固化成低级别模型可执行的方案** —— 让强模型想清楚，写成 `SOLUTION.md`；下次换 Sonnet 或 Haiku，照着这份方案也能做到同样的质量。
