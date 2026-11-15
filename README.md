@@ -18,7 +18,7 @@
 
 装好之后，它能帮你在 Claude 里做四件事：
 
-1. **给任何模型改好一条提示词（主打）** —— Claude 的核心经验在 Gemini、OpenAI、MiniMax、Kimi、GLM、DeepSeek、Qwen 上通用；国产模型效果较弱，会额外给一份降级写法。输出更准、token 更省。
+1. **给任何模型改好一条提示词** —— Claude 的核心经验在 Gemini、OpenAI、MiniMax、Kimi、GLM、DeepSeek、Qwen 上通用；国产模型效果较弱，会额外给一份降级写法。输出更准、token 更省。
 2. **在 Claude 里把一个需求固化成方案** —— 让强模型想清楚，写成 `SOLUTION.md`；下次换 Sonnet 或 Haiku，照着这份方案也能做到同样的质量。
 3. **决定这件事该交给 Claude 的哪一档** —— 哪个模型、什么 effort、哪个界面，还是做成 Skill / Subagent / MCP / Hook。
 4. **让 Claude 在上线前挑毛病** —— 不可逆动作、提示注入、花费上限、哪里会翻车。
@@ -27,7 +27,7 @@
 
 ## 四个能力
 
-### 1 · 在 Claude 里给任何模型改好一条提示词（主打）
+### 1 · 在 Claude 里给任何模型改好一条提示词
 
 这是这套 skill 的主功能。**从 Claude 提炼出来的规则，约束的是「任务怎么定义」，不是 Claude 专属的语法**——所以换个模型照样成立。
 
